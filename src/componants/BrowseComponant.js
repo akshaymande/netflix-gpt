@@ -1,12 +1,14 @@
 import React from "react";
-import UseNowPlayingMovies from "../hooks/UseNowPlayingMovies";
+import useNowPlayingMovies from "../hooks/useNowPlayingMovies";
+import usePopularMovies from "../hooks/usePopularMovies";
 import HeaderComponant from "./HeaderComponant";
 import MainContainer from "./MainContainer";
 import SecoundaryContainer from "./SecoundaryContainer";
 
 const BrowseComponant = () => {
-  UseNowPlayingMovies();
-  
+  useNowPlayingMovies();
+  usePopularMovies();
+
   return (
     <div>
       <HeaderComponant />

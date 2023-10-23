@@ -2,11 +2,15 @@ import React, { useState, useRef } from "react";
 import HeaderComponant from "./HeaderComponant";
 import NETFLIX_LOGO from "./../assets/images/Netflix_Logo_PMS.png";
 import { checkValidData } from "./../utils/validation";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser } from "../utils/UserSlice";
+import { useNavigate } from "react-router-dom";
 
 const LoginComponant = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
-
   const [errorMessage, setErrorMessage] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
@@ -18,6 +22,19 @@ const LoginComponant = () => {
     const message = checkValidData(email.current.value, password.current.value);
     setErrorMessage(message);
     if (message) return;
+  
+    console.log(isSignInForm,"isSignInFormisSignInForm")
+    if (!isSignInForm) {
+      dispatch(
+        addUser({
+          name: name.current.value,
+          email: email.current.value,
+          password: password.current.value,
+        })
+      );
+      navigate('/browse');
+    }
+   
   };
 
   return (
@@ -31,7 +48,7 @@ const LoginComponant = () => {
           className="w-full md:w-3/12 absolute p-12 bg-black my-32 mx-auto right-0 left-0 top-0 text-white rounded-lg bg-opacity-80"
         >
           <h1 className="font-bold text-3xl py-4">
-            {!isSignInForm ? "Sign In" : "Sign Up"}
+            {isSignInForm ? "Sign In" : "Sign Up"}
           </h1>
           {!isSignInForm && (
             <div>
@@ -48,7 +65,7 @@ const LoginComponant = () => {
               ref={email}
               className="p-4 my-4 w-full bg-gray-700"
               type="text"
-              placeholder="email"
+              placeholder="Email"
             />
           </div>
           <div>
@@ -56,7 +73,7 @@ const LoginComponant = () => {
               ref={password}
               className="p-4 my-4 w-full bg-gray-700"
               type="text"
-              placeholder="password"
+              placeholder="Password"
             />
           </div>
           <p className="text-red-500 font-bold text-lg py-2">{errorMessage}</p>
@@ -66,7 +83,7 @@ const LoginComponant = () => {
             onClick={handleButtonClick}
           >
             {" "}
-            {!isSignInForm ? "Sign In" : "Sign Up"}
+            {isSignInForm ? "Sign In" : "Sign Up"}
           </button>
           <p className="py-4 cursor-pointer" onClick={toggleSignInForm}>
             {isSignInForm
